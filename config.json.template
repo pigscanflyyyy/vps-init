@@ -1,0 +1,75 @@
+{
+	"stats": {},
+	"api": {
+		"tag": "api",
+		"services": [
+			"StatsService"
+		]
+	},
+	"policy": {
+		"levels": {
+			"0": {
+				"statsUserUplink": true,
+				"statsUserDownlink": true
+			}
+		},
+		"system": {
+			"statsInboundUplink": true,
+			"statsInboundDownlink": true
+		}
+	},
+	"log": {
+		"access": "/var/log/v2ray/access.log",
+		"error": "/var/log/v2ray/error.log",
+		"loglevel": "warning"
+	},
+	"header": {
+		"type": "none"
+	},
+	"inbounds": [{
+			"port": 10443,
+			"protocol": "vmess",
+			"settings": {
+				"clients": [{
+					"email": "owner",
+					"id": "${UUID}",
+					"alterId": 64
+				}]
+			},
+			"streamSettings": {
+				"network": "ws",
+				"wsSettings": {
+					"path": "/ray"
+				},
+				"sockopt": {
+					"tcpFastOpen": true
+				}
+			}
+		},
+		{
+			"listen": "127.0.0.1",
+			"port": 10085,
+			"protocol": "dokodemo-door",
+			"settings": {
+				"address": "127.0.0.1"
+			},
+			"tag": "api"
+		}
+	],
+	"outbound": {
+		"protocol": "freedom",
+		"settings": {}
+	},
+	"routing": {
+		"settings": {
+			"rules": [{
+				"inboundTag": [
+					"api"
+				],
+				"outboundTag": "api",
+				"type": "field"
+			}]
+		},
+		"strategy": "rules"
+	}
+}

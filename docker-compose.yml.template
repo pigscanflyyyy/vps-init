@@ -1,0 +1,50 @@
+---
+version: "3"
+services:
+  v2ray:
+    image: v2ray/official
+    container_name: v2ray-docker
+    volumes:
+      - ./appdata/etc/v2ray/config.json:/etc/v2ray/config.json
+      - ./appdata/log/v2ray:/var/log/v2ray
+    ports:
+      - 10443:10443
+    restart: unless-stopped
+    sysctls: 
+      net.ipv4.tcp_fastopen: 3
+    networks:
+      vlan:
+        ipv4_address: 10.10.0.2
+    dns: 8.8.8.8
+  letsencrypt:
+    image: linuxserver/letsencrypt
+    container_name: letsencrypt
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - URL=${DOMAIN}
+      - SUBDOMAINS=
+      - VALIDATION=http
+      - DHLEVEL=2048 #optional
+    volumes:
+      - ./appdata/config:/config
+    ports:
+      - 443:443
+      - 81:81
+      - 80:80
+    restart: unless-stopped
+    sysctls: 
+      net.ipv4.tcp_fastopen: 3
+    networks:
+      vlan:
+        ipv4_address: 10.10.0.3
+    dns: 8.8.8.8
+networks:
+  vlan:
+    external: false
+    ipam:
+      config:
+        - subnet: 10.10.0.0/19

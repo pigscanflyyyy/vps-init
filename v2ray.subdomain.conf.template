@@ -1,0 +1,97 @@
+# make sure that your dns has a cname set for homeassistant and that your homeassistant container is not using a base url
+
+server {
+	listen 443 ssl fastopen=4 reuseport;
+
+
+	server_name ${DOMAIN};
+
+	# enable subfolder method reverse proxy confs
+        #	include /config/nginx/proxy-confs/*.subfolder.conf;
+
+	# all ssl related config moved to ssl.conf
+	include /config/nginx/ssl.conf;
+
+	# enable for ldap auth
+	#include /config/nginx/ldap.conf;
+
+	client_max_body_size 0;
+
+    proxy_buffer_size 128k;
+    proxy_buffers   32 128k;
+    proxy_busy_buffers_size 128k;
+    proxy_headers_hash_bucket_size 128;
+    proxy_headers_hash_max_size 1024;
+
+    client_body_temp_path /tmp/nginx 1 2;
+    proxy_temp_path /tmp/nginx-proxy;
+    fastcgi_temp_path /tmp/nginx-fastcgi;
+    uwsgi_temp_path /tmp/nginx-uwsgi;
+    scgi_temp_path /tmp/nginx-scgi;
+
+    location /ray { # 与 V2Ray 配置中的 path 保持一致
+        proxy_redirect off;
+        proxy_pass http://10.10.0.2:10443;#假设WebSocket监听在环回地址的10000端口上
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $http_host;
+
+        # Show realip in v2ray access.log
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+		proxy_connect_timeout 60s;
+        proxy_read_timeout 86400s;
+        proxy_send_timeout 60s;
+    }
+}
+
+server {
+	listen 81;
+
+
+	server_name _;
+    
+    root /config/www;
+
+	# enable subfolder method reverse proxy confs
+        #	include /config/nginx/proxy-confs/*.subfolder.conf;
+
+	# all ssl related config moved to ssl.conf
+
+	client_max_body_size 0;
+
+    proxy_buffer_size 128k;
+    proxy_buffers   32 128k;
+    proxy_busy_buffers_size 128k;
+    proxy_headers_hash_bucket_size 128;
+    proxy_headers_hash_max_size 1024;
+
+    client_body_temp_path /tmp/nginx 1 2;
+    proxy_temp_path /tmp/nginx-proxy;
+    fastcgi_temp_path /tmp/nginx-fastcgi;
+    uwsgi_temp_path /tmp/nginx-uwsgi;
+    scgi_temp_path /tmp/nginx-scgi;
+
+    location /health {
+        return 200 "ok";
+    }
+
+    location /ray { # 与 V2Ray 配置中的 path 保持一致
+        proxy_redirect off;
+        proxy_pass http://10.10.0.2:10443;#假设WebSocket监听在环回地址的10000端口上
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $http_host;
+
+        # Show realip in v2ray access.log
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+		proxy_connect_timeout 60s;
+        proxy_read_timeout 86400s;
+        proxy_send_timeout 60s;
+    }
+}
