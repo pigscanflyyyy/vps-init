@@ -2,6 +2,8 @@
 ## What is this script?
 It will deploy containerized server side v2ray-ws-tls stack to the VPS server.
 ## Prerequisite
+### Install OS
+ubuntu 18.04 is recommended
 ### Install docker and docker compose
 ```bash
 sudo curl -fsSL https://get.docker.com | sh
@@ -25,6 +27,8 @@ export UUID=myUuidForV2ray
 ```
 ### Install
 ```
+git clone https://github.com/ioioioion/vps-init.git
+cd vps-init
 bash start.sh
 ```
 ## Automation
