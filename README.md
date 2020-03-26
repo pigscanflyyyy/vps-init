@@ -1,9 +1,12 @@
 # vps-init
 ## What is this script?
-It will deploy containerized server side v2ray-ws-tls stack to the VPS server.
+* Deploy containerized server side v2ray-ws-tls stack to the VPS server in 5 mins.
+* TCP fast open enabled.
+* 81 port reserved for load balancer.
+* Automation powered by github action.
 ## Prerequisite
 ### Install OS
-ubuntu 18.04 is recommended
+ubuntu 18.04 is recommended.
 ### Install docker and docker compose
 ```bash
 sudo curl -fsSL https://get.docker.com | sh
@@ -11,7 +14,7 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 sudo usermod -aG docker $USER
 ```
-Logout and login again
+Logout and login again.
 ### Enable TCP fastopen
 ```
 sudo su
@@ -26,6 +29,7 @@ export DOMAIN=mydomainname.com
 export UUID=myUuidForV2ray
 ```
 ### Install
+Make sure 80, 81 and 443 port is not occupied and available to the internet.
 ```
 git clone https://github.com/ioioioion/vps-init.git
 cd vps-init
