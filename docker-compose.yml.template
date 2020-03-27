@@ -1,6 +1,21 @@
 ---
 version: "3"
 services:
+  trojangfw:
+    image: trojangfw/trojan
+    container_name: trojan
+    volumes:
+      - ./appdata/config:/config
+    ports:
+      - 443:443
+    restart: unless-stopped
+    sysctls: 
+      net.ipv4.tcp_fastopen: 3
+    networks:
+      vlan:
+        ipv4_address: 10.10.0.4
+    dns: 8.8.8.8
+
   v2ray:
     image: v2ray/official
     container_name: v2ray-docker
@@ -32,7 +47,6 @@ services:
     volumes:
       - ./appdata/config:/config
     ports:
-      - 443:443
       - 81:81
       - 80:80
     restart: unless-stopped
