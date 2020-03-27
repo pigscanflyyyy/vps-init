@@ -19,7 +19,11 @@ Logout and login again.
 ```
 sudo su
 echo "net.ipv4.tcp_fastopen=3" > /etc/sysctl.d/98-tcp-fastopen.conf
-sysctl -p
+RAND=$(openssl rand -hex 16)
+NEWKEY=${RAND:0:8}-${RAND:8:8}-${RAND:16:8}-${RAND:24:8}
+echo "net.ipv4.tcp_fastopen_key=$NEWKEY" > /etc/sysctl.d/98-tcp_fastopen_key.conf
+sysctl --system
+unset RAND NEWKEY
 exit
 ```
 ## Install
