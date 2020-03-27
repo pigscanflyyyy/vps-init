@@ -39,7 +39,7 @@
 			"streamSettings": {
 				"network": "ws",
 				"wsSettings": {
-					"path": "/ray"
+					"path": "/${V2RAY_PATH}"
 				},
 				"sockopt": {
 					"tcpFastOpen": true

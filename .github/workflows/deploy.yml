@@ -29,6 +29,7 @@ jobs:
           export DOMAIN=${{ secrets.HOST }}
           export UUID=${{ secrets.UUID }}
           export TROJAN_PASSWORD=${{ secrets.TROJAN_PASSWORD }}
+          export V2RAY_PATH=${{ secrets.V2RAY_PATH }}
           cd ~/vps-init
           git fetch && git reset origin/master --hard
           bash start.sh

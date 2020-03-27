@@ -1,7 +1,7 @@
 # make sure that your dns has a cname set for homeassistant and that your homeassistant container is not using a base url
 
 server {
-	listen 443 ssl fastopen=4 reuseport;
+	listen 443 ssl fastopen=64 reuseport;
 
 
 	server_name ${DOMAIN};
@@ -29,7 +29,7 @@ server {
     uwsgi_temp_path /tmp/nginx-uwsgi;
     scgi_temp_path /tmp/nginx-scgi;
 
-    location /ray { # 与 V2Ray 配置中的 path 保持一致
+    location /${V2RAY_PATH} { # 与 V2Ray 配置中的 path 保持一致
         proxy_redirect off;
         proxy_pass http://10.10.0.2:10443;#假设WebSocket监听在环回地址的10000端口上
         proxy_http_version 1.1;
@@ -48,8 +48,7 @@ server {
 }
 
 server {
-	listen 81;
-
+	listen 81 fastopen=64 reuseport;
 
 	server_name _;
     
@@ -78,7 +77,7 @@ server {
         return 200 "ok";
     }
 
-    location /ray { # 与 V2Ray 配置中的 path 保持一致
+    location /${V2RAY_PATH} { # 与 V2Ray 配置中的 path 保持一致
         proxy_redirect off;
         proxy_pass http://10.10.0.2:10443;#假设WebSocket监听在环回地址的10000端口上
         proxy_http_version 1.1;

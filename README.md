@@ -1,8 +1,8 @@
 # vps-init
 ## What is this script?
-* Deploy containerized server side v2ray-ws-tls stack to the VPS server in 5 mins.
+* Automation script for v2ray-tls-ws + trojan VPS server.
+* Containerized service to keep your host clean.
 * TCP fast open enabled.
-* 81 port reserved for load balancer.
 * Automation powered by github action.
 ## Prerequisite
 ### Install OS
@@ -26,7 +26,9 @@ exit
 ### Set environment variable
 ```bash
 export DOMAIN=mydomainname.com
-export UUID=myUuidForV2ray
+export V2RAY_PATH=yourV2rayPath #get one by `uuidgen`
+export UUID=myUuidForV2ray #get one by `uuidgen`
+export TROJAN_PASSWORD=yourTrojanPassword
 ```
 ### Install
 Make sure 80, 81 and 443 port is not occupied and available to the internet.
