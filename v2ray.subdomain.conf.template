@@ -55,7 +55,7 @@ server {
     root /config/www;
 
     # enable subfolder method reverse proxy confs
-        #	include /config/nginx/proxy-confs/*.subfolder.conf;
+    # include /config/nginx/proxy-confs/*.subfolder.conf;
 
     # all ssl related config moved to ssl.conf
 

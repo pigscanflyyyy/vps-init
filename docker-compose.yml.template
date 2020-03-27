@@ -3,6 +3,11 @@ version: "3"
 services:
   trojangfw:
     image: trojangfw/trojan:1.15.1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
     container_name: trojan
     volumes:
       - ./appdata/config:/config
@@ -31,6 +36,7 @@ services:
       vlan:
         ipv4_address: 10.10.0.2
     dns: 8.8.8.8
+    
   letsencrypt:
     image: linuxserver/letsencrypt:1.3.0-ls104
     container_name: letsencrypt
