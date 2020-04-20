@@ -1,5 +1,8 @@
 ---
 version: "3"
+volumes:
+  nextcloud:
+  db:
 services:
   trojangfw:
     image: trojangfw/trojan:1.15.1
@@ -61,6 +64,35 @@ services:
     networks:
       vlan:
         ipv4_address: 10.10.0.3
+    dns: 8.8.8.8
+  db:
+    image: mariadb
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: unless-stopped
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_PASSWORD=
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+    networks:
+      vlan:
+        ipv4_address: 10.10.0.3
+    dns: 8.8.8.8
+
+  app:
+    image: nextcloud
+    ports:
+      - 8080:80
+    links:
+      - db
+    volumes:
+      - nextcloud:/var/www/html
+    restart: unless-stopped
+    networks:
+      vlan:
+        ipv4_address: 10.10.0.4
     dns: 8.8.8.8
 networks:
   vlan:
