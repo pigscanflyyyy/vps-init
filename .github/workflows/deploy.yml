@@ -22,7 +22,7 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
+        key: ${{ secrets.PEM }}
         port: ${{ secrets.PORT }}
         script_stop: true
         script: |
