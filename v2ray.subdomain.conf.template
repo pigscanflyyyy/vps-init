@@ -98,6 +98,7 @@ server {
     }
 
     location / {
+        add_header Strict-Transport-Security "max-age=63072000; includeSubdomains;";
         proxy_redirect off;
         proxy_pass http://10.10.0.6:80;
         proxy_read_timeout 300;
