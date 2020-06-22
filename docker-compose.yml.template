@@ -5,7 +5,7 @@ volumes:
   db:
 services:
   trojangfw:
-    image: trojangfw/trojan:1.16.0
+    image: trojangfw/trojan:latest
     logging:
       driver: "json-file"
       options:
